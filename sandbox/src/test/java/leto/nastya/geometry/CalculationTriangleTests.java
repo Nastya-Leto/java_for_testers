@@ -123,8 +123,8 @@ public class CalculationTriangleTests {
 
     @Test
     void checkEqualsSideTriangleArrayTest1() {
-        var v1 = new TriangleArray(4,5,6);
-        var v2 = new TriangleArray(6,5,4);
+        var v1 = new TriangleArray(2,3,4);
+        var v2 = new TriangleArray(2,4,3);
         Assertions.assertEquals(v1,v2);
 
     }
