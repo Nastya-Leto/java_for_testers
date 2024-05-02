@@ -1,3 +1,6 @@
+package tests;
+
+import model.Group;
 import org.junit.jupiter.api.Test;
 
 public class CreateNewGroupTests extends TestBase {
@@ -5,8 +8,7 @@ public class CreateNewGroupTests extends TestBase {
     @Test
     public void createNewGroupTests() {
 
-        openGroupPage();
-        createGroup();
+        app.groups().createGroup(new Group("name", "header", "footer"));
     }
 
 }
