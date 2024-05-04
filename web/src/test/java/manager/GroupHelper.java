@@ -17,11 +17,6 @@ public class GroupHelper extends HelperBase {
         }
     }
 
-    public boolean isGroupPresent() {
-        openGroupPage();
-        return manager.isElementPresent(By.name("selected[]"));
-    }
-
     public void createGroup(Group group) {
         openGroupPage();
         initGroupCreation();
@@ -61,5 +56,23 @@ public class GroupHelper extends HelperBase {
 
     private void selectGroup() {
         click(By.name("selected[]"));
+    }
+
+    public int getCount() {
+        openGroupPage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
+
+    public void removeAllGroups() {
+        openGroupPage();
+        selectAllGroups();
+        removeSelectedGroup();
+    }
+
+    private void selectAllGroups() {
+        var checkboxes = manager.driver.findElements(By.name("selected[]"));
+        for (var checkbox : checkboxes) {
+            checkbox.click();
+        }
     }
 }

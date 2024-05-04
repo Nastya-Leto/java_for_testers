@@ -1,7 +1,6 @@
 package manager;
 
 import model.Contact;
-import model.Group;
 import org.openqa.selenium.By;
 
 public class ContactHelper extends HelperBase {
@@ -53,8 +52,21 @@ public class ContactHelper extends HelperBase {
         removeSelectedContact();
     }
 
-    public boolean isContactPresent() {
+    public int getCountContact() {
         openHomePage();
-        return manager.isElementPresent(By.name("selected[]"));
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
+
+    public void removeAllContacts() {
+        openHomePage();
+        selectAllContacts();
+        removeSelectedContact();
+    }
+
+    private void selectAllContacts() {
+        var checkboxes = manager.driver.findElements(By.name("selected[]"));
+        for (var checkbox : checkboxes) {
+            checkbox.click();
+        }
     }
 }
