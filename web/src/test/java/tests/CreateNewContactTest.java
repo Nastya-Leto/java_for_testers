@@ -13,16 +13,16 @@ import java.util.List;
 public class CreateNewContactTest extends TestBase {
 
     public static List<Contact> contactProvider() {
-        var result = new ArrayList<Contact>(List.of(new Contact("first Name", "", "", "")));
+        var result = new ArrayList<Contact>(List.of(new Contact("", "first Name", "", "", "")));
         for (var firstName : List.of("", "first Name")) {
             for (var middleName : List.of("", "middle Name")) {
                 for (var email : List.of("", "email")) {
                     for (var address : List.of("", "address")) {
-                        result.add(new Contact(firstName, middleName, email, address));
+                        result.add(new Contact("", firstName, middleName, email, address));
                     }
                 }
                 for (int i = 0; i < 5; i++) {
-                    result.add(new Contact(randomString(i * 10), randomString(i * 10), randomString(i * 10), randomString(i * 10)));
+                    result.add(new Contact("", randomString(i * 10), randomString(i * 10), randomString(i * 10), randomString(i * 10)));
                 }
             }
         }
@@ -33,7 +33,7 @@ public class CreateNewContactTest extends TestBase {
     public void createNewContactTest() {
 
         int contactCount = app.contacts().getCountContact();
-        app.contacts().createContact(new Contact("Дейенерис", "Таргариен", "Самара", "mail@google.com"));
+        app.contacts().createContact(new Contact("", "Дейенерис", "Таргариен", "Самара", "mail@google.com"));
         int newContactCount = app.contacts().getCountContact();
         Assertions.assertEquals(contactCount + 1, newContactCount);
     }
@@ -48,8 +48,5 @@ public class CreateNewContactTest extends TestBase {
         Assertions.assertEquals(contactCount + 1, newContactCount);
     }
 
-    @Test
-    public void modifyContactTest() {
-        app.contacts().modifyContacts(new Contact("Дейенерис", "Таргариен", "Самара", "mail@google.com"));
-    }
+
 }

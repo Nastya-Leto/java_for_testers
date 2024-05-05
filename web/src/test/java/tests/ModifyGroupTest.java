@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-public class ModifyGroupTest extends TestBase{
+public class ModifyGroupTest extends TestBase {
 
     @Test
     public void canModifyGroupTests() {
