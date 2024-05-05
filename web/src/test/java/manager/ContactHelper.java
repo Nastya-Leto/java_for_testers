@@ -1,6 +1,7 @@
 package manager;
 
 import model.Contact;
+import model.Group;
 import org.openqa.selenium.By;
 
 public class ContactHelper extends HelperBase {
@@ -22,8 +23,19 @@ public class ContactHelper extends HelperBase {
         type(By.name("email"), contactInfo.email());
     }
 
+    public void modifyContacts(Contact contact) {
+        openHomePage();
+        manager.driver.findElement(By.xpath("//img[@alt=\'Edit\']")).click();
+        fillContactForm(contact);
+        submitContactUpdate();
+    }
+
     private void submitContactCreation() {
         click(By.name("submit"));
+    }
+
+    private void submitContactUpdate() {
+        click(By.name("update"));
     }
 
 

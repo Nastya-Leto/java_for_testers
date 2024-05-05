@@ -47,4 +47,9 @@ public class CreateNewContactTest extends TestBase {
         int newContactCount = app.contacts().getCountContact();
         Assertions.assertEquals(contactCount + 1, newContactCount);
     }
+
+    @Test
+    public void modifyContactTest() {
+        app.contacts().modifyContacts(new Contact("Дейенерис", "Таргариен", "Самара", "mail@google.com"));
+    }
 }
