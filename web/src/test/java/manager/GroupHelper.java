@@ -104,7 +104,6 @@ public class GroupHelper extends HelperBase {
             var id = checkbox.getAttribute("value");
             groups.add(new Group().withId(id).withName(name));
         }
-
         return groups;
     }
 }

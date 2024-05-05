@@ -19,21 +19,27 @@ public class ContactHelper extends HelperBase {
 
     public void fillContactForm(Contact contactInfo) {
 
-        type(By.name("firstname"), contactInfo.lastName());
-        type(By.name("middlename"), contactInfo.middleName());
+        type(By.name("lastname"), contactInfo.lastName());
+        type(By.name("firstname"), contactInfo.firstName());
         type(By.name("address"), contactInfo.address());
         type(By.name("email"), contactInfo.email());
     }
 
-    public void modifyContacts(Contact contact) {
+    public void modifyContacts(Contact contact, Contact modifyContact) {
         openHomePage();
-        manager.driver.findElement(By.xpath("//img[@alt=\'Edit\']")).click();
-        fillContactForm(contact);
+        selectContactEdit(contact);
+        fillContactForm(modifyContact);
         submitContactUpdate();
     }
 
     private void submitContactCreation() {
         click(By.name("submit"));
+    }
+
+    private void selectContactEdit(Contact contact) {
+
+        manager.driver.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", contact.id()))).click();
+        //manager.driver.findElement(By.xpath("//a[@href=\"edit.php?id=167\"]\\")).click();
     }
 
     private void submitContactUpdate() {
@@ -87,13 +93,13 @@ public class ContactHelper extends HelperBase {
     public List<Contact> getList() {
         openHomePage();
         var contacts = new ArrayList<Contact>();
-        var trs = manager.driver.findElements(By.cssSelector("tr[name=\"entry\"]"));
+        var trs = manager.driver.findElements(By.cssSelector("[name='entry']"));
         for (var tr : trs) {
-            var lastName = tr.findElement(By.xpath("//td[2]")).getText();
-            var firstName = tr.findElement(By.xpath("//td[3]")).getText();
+            var lastName = tr.findElement(By.xpath(".//td[2]")).getText();
+            var firstName = tr.findElement(By.xpath(".//td[3]")).getText();
             var checkbox = tr.findElement(By.name("selected[]"));
             var id = checkbox.getAttribute("value");
-            contacts.add(new Contact().withId(id).withLastName(lastName).withMiddleName(firstName));
+            contacts.add(new Contact().withId(id).withFirstName(firstName));
         }
         return contacts;
     }

@@ -18,13 +18,11 @@ public class DeleteGroupTests extends TestBase {
         if (app.groups().getCount() == 0) {
             app.groups().createGroup(new Group("", "name", "header", "footer"));
         }
-        //int groupCount = app.groups().getCount();
-        List <Group> oldGroups = app.groups().getList();
+        List<Group> oldGroups = app.groups().getList();
         var rnd = new Random();
         var index = rnd.nextInt(oldGroups.size());
         app.groups().removeGroup(oldGroups.get(index));
-        List <Group> newGroups = app.groups().getList();
-        //int newGroupCount = app.groups().getCount();
+        List<Group> newGroups = app.groups().getList();
         var expectedList = new ArrayList<>(oldGroups);
         expectedList.remove(index);
         Assertions.assertEquals(newGroups, expectedList);

@@ -47,6 +47,4 @@ public class CreateNewContactTest extends TestBase {
         int newContactCount = app.contacts().getCountContact();
         Assertions.assertEquals(contactCount + 1, newContactCount);
     }
-
-
 }
