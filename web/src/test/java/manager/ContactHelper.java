@@ -36,11 +36,6 @@ public class ContactHelper extends HelperBase {
         click(By.name("submit"));
     }
 
-    private void selectContactEdit(Contact contact) {
-
-        manager.driver.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", contact.id()))).click();
-        //manager.driver.findElement(By.xpath("//a[@href=\"edit.php?id=167\"]\\")).click();
-    }
 
     private void submitContactUpdate() {
         click(By.name("update"));
@@ -60,6 +55,16 @@ public class ContactHelper extends HelperBase {
 
     private void selectContact(Contact contact) {
         click(By.cssSelector(String.format("input[value='%s']", contact.id())));
+    }
+
+    private void selectGroupList(Contact contact) {
+        click(By.cssSelector(String.format("option[value='%s']", contact.id())));
+    }
+
+    private void selectContactEdit(Contact contact) {
+
+        manager.driver.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", contact.id()))).click();
+        //manager.driver.findElement(By.xpath("//a[@href=\"edit.php?id=167\"]\\")).click();
     }
 
     private void removeSelectedContact() {
@@ -89,6 +94,38 @@ public class ContactHelper extends HelperBase {
             checkbox.click();
         }
     }
+
+    private void selectGroupFromList(Contact contact) {
+        click(By.cssSelector(String.format("option[value='%s']", contact.id())));
+    }
+
+    private void clickSelectGroup() {
+        click(By.name("to_group"));
+    }
+
+    private void clickAddButton() {
+        click(By.name("add"));
+    }
+
+    public void addingContactToGroup(Contact contact) {
+        openHomePage();
+        selectGroupList(contact);
+        clickSelectGroup();
+        selectGroupFromList(contact);
+        clickAddButton();
+    }
+
+    public List<Contact> getListGroup() {
+        openHomePage();
+        var groups = new ArrayList<Contact>();
+        var options = manager.driver.findElements(By.cssSelector("option"));
+        for (var option : options) {
+            var id = option.getAttribute("value");
+            groups.add(new Contact().withId(id));
+        }
+        return groups;
+    }
+
 
     public List<Contact> getList() {
         openHomePage();
