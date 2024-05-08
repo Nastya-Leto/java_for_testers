@@ -99,7 +99,7 @@ public class ContactHelper extends HelperBase {
             var firstName = tr.findElement(By.xpath(".//td[3]")).getText();
             var checkbox = tr.findElement(By.name("selected[]"));
             var id = checkbox.getAttribute("value");
-            contacts.add(new Contact().withId(id).withFirstName(firstName));
+            contacts.add(new Contact().withId(id).withLastName(lastName).withFirstName(firstName));
         }
         return contacts;
     }
