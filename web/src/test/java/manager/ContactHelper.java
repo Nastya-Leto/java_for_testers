@@ -13,7 +13,6 @@ public class ContactHelper extends HelperBase {
     }
 
     public void initContactCreation() {
-
         click(By.linkText("add new"));
     }
 
@@ -103,16 +102,37 @@ public class ContactHelper extends HelperBase {
         click(By.name("to_group"));
     }
 
+    private void clickSelectListGroup() {
+        click(By.name("group"));
+    }
+
     private void clickAddButton() {
         click(By.name("add"));
+    }
+
+    private void clickDeleteButton() {
+        click(By.cssSelector("input[value]"));
+    }
+
+    private void clickCheckBox() {
+        click(By.name("selected[]"));
     }
 
     public void addingContactToGroup(Contact contact) {
         openHomePage();
         selectGroupList(contact);
-        clickSelectGroup();
+        //clickSelectGroup();
         selectGroupFromList(contact);
         clickAddButton();
+    }
+
+    public void removeContactFromGroup(Contact contact) {
+        openHomePage();
+        clickSelectListGroup();
+        selectGroupFromList(contact);
+        clickCheckBox();
+        clickDeleteButton();
+
     }
 
     public List<Contact> getListGroup() {

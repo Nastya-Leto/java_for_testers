@@ -14,9 +14,21 @@ public class GroupContactTests extends TestBase {
         if (app.contacts().getCountContact() == 0) {
             app.contacts().createContact(new Contact("", "Дейенерис", "Таргариен", "Москва", "mail@google.com"));
         }
-        List<Contact> oldGroups = app.contacts().getListGroup();
+        List<Contact> oldGroups= app.contacts().getListGroup();
         var rnd = new Random();
         var index = rnd.nextInt(oldGroups.size());
         app.contacts().addingContactToGroup(oldGroups.get(index));
+    }
+
+    @Test
+    public void removeContactFromGroup() {
+
+        if (app.contacts().getCountContact() == 0) {
+            app.contacts().createContact(new Contact("", "Дейенерис", "Таргариен", "Москва", "mail@google.com"));
+        }
+        List<Contact> oldGroups= app.contacts().getListGroup();
+        var rnd = new Random();
+        var index = rnd.nextInt(oldGroups.size());
+        app.contacts().removeContactFromGroup(oldGroups.get(index));
     }
 }

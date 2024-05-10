@@ -14,15 +14,15 @@ public class DeleteGroupTests extends TestBase {
     @Test
     public void deleteGroupTests() {
 
-
         if (app.groups().getCount() == 0) {
             app.groups().createGroup(new Group("", "name", "header", "footer"));
         }
-        List<Group> oldGroups = app.groups().getList();
+
+        List<Group> oldGroups = app.hbm().getGroupListFromDb();
         var rnd = new Random();
         var index = rnd.nextInt(oldGroups.size());
         app.groups().removeGroup(oldGroups.get(index));
-        List<Group> newGroups = app.groups().getList();
+        List<Group> newGroups = app.hbm().getGroupListFromDb();
         var expectedList = new ArrayList<>(oldGroups);
         expectedList.remove(index);
         Assertions.assertEquals(newGroups, expectedList);
@@ -34,8 +34,9 @@ public class DeleteGroupTests extends TestBase {
         if (app.groups().getCount() == 0) {
             app.groups().createGroup(new Group("", "name", "header", "footer"));
         }
+
         app.groups().removeAllGroups();
-        var groupCount = app.groups().getCount();
+        var groupCount = app.hbm().getGroupListFromDb().size();
         Assertions.assertEquals(0, groupCount);
     }
 }

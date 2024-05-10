@@ -43,7 +43,7 @@ public class GroupHelper extends HelperBase {
     private void fillGroupForm(Group group) {
         type(By.name("group_name"), group.name());
         type(By.name("group_header"), group.header());
-        type(By.name("group_footer"), group.header());
+        type(By.name("group_footer"), group.footer());
     }
 
     public void modifyGroups(Group group, Group modifiedGroup) {

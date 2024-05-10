@@ -2,6 +2,7 @@ package tests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import common.CommonFunction;
 import model.Group;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -58,10 +59,18 @@ public class CreateNewGroupTests extends TestBase {
         return result;
     }
 
+    public static List<Group> singleRandomGroup() {
+        return List.of(new Group()
+                .withName(CommonFunction.randomString(5))
+                .withFooter(CommonFunction.randomString(2))
+                .withHeader(CommonFunction.randomString(9)));
+    }
+
+
     private static Group generateRandomGroup(int i) {
-        String randomName = randomString(i * 10);
-        String randomHeader = randomString(i * 10);
-        String randomFooter = randomString(i * 10);
+        String randomName = randomString(i);
+        String randomHeader = randomString(i);
+        String randomFooter = randomString(i);
         return new Group("", randomName, randomHeader, randomFooter);
     }
 
@@ -69,26 +78,51 @@ public class CreateNewGroupTests extends TestBase {
     @Test
     public void createNewGroupTests() {
 
-        int groupCount = app.groups().getCount();
-        app.groups().createGroup(new Group("", "name", "header", "footer"));
-        int newGroupCount = app.groups().getCount();
-        Assertions.assertEquals(groupCount + 1, newGroupCount);
+        List<Group> oldGroups = app.hbm().getGroupListFromDb();
+        Group rnd = generateRandomGroup(5);
+        app.groups().createGroup(rnd);
+        List<Group> newGroups = app.hbm().getGroupListFromDb();
+        final Comparator<Group> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newGroups.sort(compareById);
+        var expectedList = new ArrayList<>(oldGroups);
+        expectedList.add(rnd);
+        expectedList.sort(compareById);
+        Assertions.assertEquals(expectedList, newGroups);//Ошибка For input string: ""
+    }
+
+    @ParameterizedTest
+    @MethodSource("singleRandomGroup")
+    public void createNewGroupTests3(Group group) {
+        List<Group> oldGroups = app.hbm().getGroupListFromDb();
+        app.groups().createGroup(group);
+        List<Group> newGroups = app.hbm().getGroupListFromDb();
+        final Comparator<Group> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newGroups.sort(compareById);
+        var expectedList = new ArrayList<>(oldGroups);
+        expectedList.add(group.withId(newGroups.get(newGroups.size() - 1).id()));//шо тут происходит
+        expectedList.sort(compareById);
+        Assertions.assertEquals(expectedList, newGroups);
     }
 
     @ParameterizedTest
     @MethodSource("groupProvider")
     public void createNewMultipleGroupsTests(Group group) {
 
-        List<Group> oldGroups = app.groups().getList();
+        List<Group> oldGroups = app.hbm().getGroupListFromDb();
         app.groups().createGroup(group);
-        List<Group> newGroups = app.groups().getList();
+        List<Group> newGroups = app.hbm().getGroupListFromDb();
         final Comparator<Group> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
         newGroups.sort(compareById);
+        var maxId = newGroups.get(newGroups.size() - 1).id();
         var expectedList = new ArrayList<>(oldGroups);
-        expectedList.add(group.withId(newGroups.get(newGroups.size() - 1).id()).withHeader("").withFooter(""));
+        expectedList.add(group.withId(maxId));
         expectedList.sort(compareById);
-        Assertions.assertEquals(newGroups, expectedList);
+        Assertions.assertEquals(expectedList, newGroups);
     }
 }
