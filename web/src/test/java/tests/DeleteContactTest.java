@@ -17,7 +17,7 @@ public class DeleteContactTest extends TestBase {
             app.contacts().createContact(new Contact("", "Дейенерис", "Таргариен", "Москва", "mail@google.com"));
 
         }
-        List<Contact> oldGroups = app.contacts().getList();
+        List<Contact> oldGroups = app.hbm().getContactFromDb();
         var rnd = new Random();
         var index = rnd.nextInt(oldGroups.size());
         app.contacts().removeContact(oldGroups.get(index));
@@ -34,7 +34,7 @@ public class DeleteContactTest extends TestBase {
             app.contacts().createContact(new Contact("", "Дейенерис", "Таргариен", "Москва", "mail@google.com"));
         }
         app.contacts().removeAllContacts();
-        var contactsCount = app.contacts().getCountContact();
+        var contactsCount = app.hbm().getContactFromDb().size();
         Assertions.assertEquals(0, contactsCount);
     }
 }

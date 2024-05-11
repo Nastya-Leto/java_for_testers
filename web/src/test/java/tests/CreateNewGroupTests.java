@@ -89,7 +89,7 @@ public class CreateNewGroupTests extends TestBase {
         var expectedList = new ArrayList<>(oldGroups);
         expectedList.add(rnd);
         expectedList.sort(compareById);
-        Assertions.assertEquals(expectedList, newGroups);//Ошибка For input string: ""
+        Assertions.assertEquals(expectedList, newGroups);
     }
 
     @ParameterizedTest
@@ -103,7 +103,7 @@ public class CreateNewGroupTests extends TestBase {
         };
         newGroups.sort(compareById);
         var expectedList = new ArrayList<>(oldGroups);
-        expectedList.add(group.withId(newGroups.get(newGroups.size() - 1).id()));//шо тут происходит
+        expectedList.add(group.withId(newGroups.get(newGroups.size() - 1).id()));
         expectedList.sort(compareById);
         Assertions.assertEquals(expectedList, newGroups);
     }
