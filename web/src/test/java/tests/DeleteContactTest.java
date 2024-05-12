@@ -21,7 +21,7 @@ public class DeleteContactTest extends TestBase {
         var rnd = new Random();
         var index = rnd.nextInt(oldGroups.size());
         app.contacts().removeContact(oldGroups.get(index));
-        List<Contact> newGroups = app.contacts().getList();
+        List<Contact> newGroups = app.hbm().getContactFromDb();
         var expectedList = new ArrayList<>(oldGroups);
         expectedList.remove(index);
         Assertions.assertEquals(newGroups, expectedList);

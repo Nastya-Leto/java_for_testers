@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import common.CommonFunction;
 import model.Contact;
-import model.Group;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -43,23 +41,6 @@ public class CreateNewContactTest extends TestBase {
                 .withLastName(CommonFunction.randomString(3))
                 .withAddress(CommonFunction.randomString(11))
                 .withEmail(CommonFunction.randomString(9)));
-    }
-
-    @Test
-    public void createNewContactTest() {
-
-        List<Contact> oldContacts = app.hbm().getContactFromDb();
-        Contact contact = new Contact("", "Дейенерис", "Таргариен", "Самара", "mail@google.com");
-        app.contacts().createContact(contact);
-        List<Contact> newContacts = app.hbm().getContactFromDb();
-        final Comparator<Contact> compareById = (o1, o2) -> {
-            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-        };
-        newContacts.sort(compareById);
-        var expectedList = new ArrayList<>(oldContacts);
-        expectedList.add(contact.withId(newContacts.get(newContacts.size() - 1).id()));
-        expectedList.sort(compareById);
-        Assertions.assertEquals(expectedList, newContacts);
     }
 
     @ParameterizedTest
