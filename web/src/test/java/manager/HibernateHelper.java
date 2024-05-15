@@ -16,10 +16,9 @@ public class HibernateHelper extends HelperBase {
     public HibernateHelper(ApplicationManager manager) {
         super(manager);
         sessionFactory = new Configuration()
-                //.addAnnotatedClass(Book.class)
                 .addAnnotatedClass(GroupDto.class)
                 .addAnnotatedClass(ContactDto.class)
-                .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook")
+                .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook?zeroDateTimeBehavior=convertToNull")
                 .setProperty(AvailableSettings.USER, "root")
                 .setProperty(AvailableSettings.PASS, "")
                 .buildSessionFactory();
@@ -42,7 +41,6 @@ public class HibernateHelper extends HelperBase {
     }
 
     private static Group convertGroup(GroupDto dto) {
-
         return new Group("" + dto.id, dto.name, dto.header, dto.footer);
     }
 
@@ -60,5 +58,17 @@ public class HibernateHelper extends HelperBase {
         return convertListContact(sessionFactory.fromSession(session -> {
             return session.createQuery("from ContactDto", ContactDto.class).list();
         }));
+    }
+
+    public List<Contact> getContactsInGroup(Group group) {
+        return sessionFactory.fromSession(session -> {
+            return convertListContact(session.get(GroupDto.class, group.id()).contacts);
+        });
+    }
+
+    public List<Group> getGroupsInContact(Contact contact) {
+        return sessionFactory.fromSession(session -> {
+            return convertListGroup(session.get(ContactDto.class, contact.id()).groups);
+        });
     }
 }

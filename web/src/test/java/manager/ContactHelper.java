@@ -1,6 +1,7 @@
 package manager;
 
 import model.Contact;
+import model.Group;
 import org.openqa.selenium.By;
 
 import java.util.ArrayList;
@@ -56,14 +57,19 @@ public class ContactHelper extends HelperBase {
         click(By.cssSelector(String.format("input[value='%s']", contact.id())));
     }
 
-    private void selectGroupList(Contact contact) {
-        click(By.cssSelector(String.format("option[value='%s']", contact.id())));
+    private void selectGroupList(Group group) {
+        //click(By.cssSelector(String.format("option[value='%s']", group.id())));
+        click(By.cssSelector(String.format("[name='to_group'] [value='%s'] ", group.id())));
+    }
+
+    private void selectGroupFromFilter(Group group) {
+        click(By.cssSelector(String.format("[name='group'] option[value='%s'] ", group.id())));
     }
 
     private void selectContactEdit(Contact contact) {
 
         manager.driver.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", contact.id()))).click();
-        //manager.driver.findElement(By.xpath("//a[@href=\"edit.php?id=167\"]\\")).click();
+
     }
 
     private void removeSelectedContact() {
@@ -102,11 +108,11 @@ public class ContactHelper extends HelperBase {
         click(By.name("to_group"));
     }
 
-    private void clickSelectListGroup() {
+    private void clickSelectFilterGroup(Group group) {
         click(By.name("group"));
     }
 
-    private void clickAddButton() {
+    private void clickAddFromGroupButton() {
         click(By.name("add"));
     }
 
@@ -114,25 +120,32 @@ public class ContactHelper extends HelperBase {
         click(By.cssSelector("input[value]"));
     }
 
+    private void clickRemoveFromGroupButton() {
+        click(By.name("remove"));
+    }
+
     private void clickCheckBox() {
         click(By.name("selected[]"));
     }
 
-    public void addingContactToGroup(Contact contact) {
-        openHomePage();
-        selectGroupList(contact);
-        //clickSelectGroup();
-        selectGroupFromList(contact);
-        clickAddButton();
+    private void clickCheckBoxId(Contact contact) {
+        //click(By.cssSelector(String.format("[name='selected[]'] [value='%s'] ", contact.id())));
+        click(By.cssSelector(String.format(" input[value='%s'] ", contact.id())));
     }
 
-    public void removeContactFromGroup(Contact contact) {
+    public void addingContactToGroup(Contact contact, Group group) {
         openHomePage();
-        clickSelectListGroup();
-        selectGroupFromList(contact);
-        clickCheckBox();
-        clickDeleteButton();
+        clickCheckBoxId(contact);
+        clickSelectGroup();
+        selectGroupList(group);
+        clickAddFromGroupButton();
+    }
 
+    public void removeContactFromGroup(Contact contact, Group group) {
+        openHomePage();
+        selectGroupFromFilter(group);
+        clickCheckBoxId(contact);
+        clickRemoveFromGroupButton();
     }
 
     public List<Contact> getListGroup() {

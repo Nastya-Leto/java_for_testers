@@ -1,8 +1,8 @@
 package manager;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "addressbook")
@@ -14,4 +14,10 @@ public class ContactDto {
     public String firstName;
     public String address;
     public String email;
+
+    @ManyToMany
+    @JoinTable(name = "address_in_groups",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    public List<GroupDto> groups;
 }
