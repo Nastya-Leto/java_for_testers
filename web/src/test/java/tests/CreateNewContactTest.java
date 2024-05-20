@@ -18,12 +18,12 @@ import java.util.List;
 public class CreateNewContactTest extends TestBase {
 
     public static List<Contact> contactProvider() throws IOException {
-        var result = new ArrayList<Contact>(List.of(new Contact("", "last Name", "", "", "")));
+        var result = new ArrayList<Contact>(List.of(new Contact("", "last Name", "", "", "", "", "", "", "", "", "")));
         for (var firstName : List.of("", "first Name")) {
             for (var lastName : List.of("", "last Name")) {
                 for (var email : List.of("", "email")) {
                     for (var address : List.of("", "address")) {
-                        result.add(new Contact("", lastName, firstName, address, email));
+                        result.add(new Contact("", lastName, firstName, address, email, "", "", "", "", "", ""));
                     }
                 }
             }

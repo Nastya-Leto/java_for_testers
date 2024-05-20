@@ -15,7 +15,7 @@ public class ModifyContactTest extends TestBase {
     public void modifyContactTest() {
 
         if (app.contacts().getCountContact() == 0) {
-            app.contacts().createContact(new Contact("", "Дейенерис", "Таргариен", "Москва", "mail@google.com"));
+            app.contacts().createContact(new Contact("", "Дейенерис", "Таргариен", "Москва", "mail@google.com", "", "", "", "", "", ""));
         }
         List<Contact> oldContactList = app.hbm().getContactFromDb();
         var rnd = new Random();

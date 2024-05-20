@@ -2,9 +2,12 @@ package manager;
 
 import model.Group;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class GroupHelper extends HelperBase {
 
@@ -88,13 +91,17 @@ public class GroupHelper extends HelperBase {
 
 
     private void selectAllGroups() {
-        var checkboxes = manager.driver.findElements(By.name("selected[]"));
-        for (var checkbox : checkboxes) {
-            checkbox.click();
-        }
+        /*var checkboxes = manager.driver.findElements(By.name("selected[]"));//Вариант с использованием цикла
+        for (var checkbox : checkboxes) {checkbox.click(); }
+        checkboxes.forEach(checkbox -> checkbox.click());*/
+
+        manager.driver
+                .findElements(By.name("selected[]"))
+                .forEach(WebElement::click); //для каждого элемента списка checkboxes будет вызываться метод click
+
     }
 
-    public List<Group> getList() {
+    /*public List<Group> getList() {
         openGroupPage();
         var groups = new ArrayList<Group>();
         var spans = manager.driver.findElements(By.cssSelector("span.group"));
@@ -105,5 +112,25 @@ public class GroupHelper extends HelperBase {
             groups.add(new Group().withId(id).withName(name));
         }
         return groups;
+    }*/
+
+    public List<Group> getList() {
+        openGroupPage();
+        var spans = manager.driver.findElements(By.cssSelector("span.group"));
+        return spans.stream()//из списка строим поток
+                .map(span -> { //извлекаем из веб элемента информаицию
+                    var name = span.getText();
+                    var checkbox = span.findElement(By.name("selected[]"));
+                    var id = checkbox.getAttribute("value");
+                    return new Group().withId(id).withName(name);
+                })
+                .collect(Collectors.toList()); //собираем в список
     }
+
+    public void checkListGroupsNotEmpty() {
+        if (manager.hbm().getGroupListFromDb().isEmpty()) {
+            manager.groups().createGroup(new Group("", "name", "header", "footer"));
+        }
+    }
+
 }

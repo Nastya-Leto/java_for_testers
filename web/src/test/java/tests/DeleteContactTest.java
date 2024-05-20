@@ -14,7 +14,7 @@ public class DeleteContactTest extends TestBase {
     public void deleteContactTest() {
 
         if (app.contacts().getCountContact() == 0) {
-            app.contacts().createContact(new Contact("", "Дейенерис", "Таргариен", "Москва", "mail@google.com"));
+            app.contacts().createContact(new Contact("", "Дейенерис", "Таргариен", "Москва", "mail@google.com", "", "", "", "", "", ""));
 
         }
         List<Contact> oldGroups = app.hbm().getContactFromDb();
@@ -31,7 +31,7 @@ public class DeleteContactTest extends TestBase {
     public void DeleteAllContactsTests() {
 
         if (app.contacts().getCountContact() == 0) {
-            app.contacts().createContact(new Contact("", "Дейенерис", "Таргариен", "Москва", "mail@google.com"));
+            app.contacts().createContact(new Contact("", "Дейенерис", "Таргариен", "Москва", "mail@google.com", "", "", "", "", "", ""));
         }
         app.contacts().removeAllContacts();
         var contactsCount = app.hbm().getContactFromDb().size();

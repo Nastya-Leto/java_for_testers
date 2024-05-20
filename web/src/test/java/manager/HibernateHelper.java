@@ -8,6 +8,7 @@ import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HibernateHelper extends HelperBase {
 
@@ -25,11 +26,8 @@ public class HibernateHelper extends HelperBase {
     }
 
     static List<Group> convertListGroup(List<GroupDto> dtos) {
-        List<Group> result = new ArrayList<>();
-        for (var dto : dtos) {
-            result.add(convertGroup(dto));
-        }
-        return result;
+        return dtos.stream().map(HibernateHelper::convertGroup).collect(Collectors.toList());
+        //Из списка строит поток,потом применяет к этому потоку трасформатор, потом результат собирает в список и возвращает его обратно
     }
 
     static List<Contact> convertListContact(List<ContactDto> dtos) {
@@ -45,7 +43,7 @@ public class HibernateHelper extends HelperBase {
     }
 
     private static Contact convertContact(ContactDto dto) {
-        return new Contact("" + dto.id, dto.lastName, dto.firstName, dto.address, dto.email);
+        return new Contact("" + dto.id, dto.lastName, dto.firstName, dto.address, dto.email, dto.home, dto.mobile, dto.work, dto.phone2, "", "");
     }
 
     public List<Group> getGroupListFromDb() {

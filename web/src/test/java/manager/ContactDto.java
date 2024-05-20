@@ -14,6 +14,14 @@ public class ContactDto {
     public String firstName;
     public String address;
     public String email;
+    public String email2;
+    public String email3;
+    public String home;
+    public String mobile;
+    public String work;
+    public String phone2;
+
+
 
     @ManyToMany
     @JoinTable(name = "address_in_groups",
